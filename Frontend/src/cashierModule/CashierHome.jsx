@@ -1,3 +1,4 @@
+import Sidebar, { SidebarItem } from './Sidebar';
 import { useState } from 'react';
 import {
   LayoutDashboard,
@@ -7,47 +8,14 @@ import {
   PackageSearch,
 } from "lucide-react";
 
-import Dashboard from './Dashboard'; // ✅ New Dashboard component
+import Dashboard from './Dashboard';
 import POS from './POS';
 import Billing from './Billing';
 import Customers from './Customers';
 import Products from './Products';
 
-// ✅ Sidebar Component for Cashier
-const CashierSidebar = ({ activePage, onSelectPage }) => {
-  const sidebarItems = [
-    { id: "Dashboard", label: "Dashboard", icon: <LayoutDashboard size={18} /> },
-    { id: "POS", label: "POS", icon: <ShoppingCart size={18} /> },
-    { id: "Billing", label: "Billing", icon: <FileText size={18} /> },
-    { id: "Customers", label: "Customers", icon: <Users size={18} /> },
-    { id: "Products", label: "Product Lookup", icon: <PackageSearch size={18} /> },
-  ];
-
-  return (
-    <div className="bg-gray-100 w-64 h-screen shadow-md px-4 py-6">
-      <h2 className="text-lg font-bold mb-6">Cashier Panel</h2>
-      <ul className="space-y-2">
-        {sidebarItems.map((item) => (
-          <li
-            key={item.id}
-            onClick={() => onSelectPage(item.id)}
-            className={`flex items-center space-x-2 px-3 py-2 rounded cursor-pointer ${
-              activePage === item.id
-                ? "bg-blue-500 text-white"
-                : "hover:bg-gray-200 text-gray-700"
-            }`}
-          >
-            {item.icon}
-            <span>{item.label}</span>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-};
-
 function CashierHome() {
-  const [activePage, setActivePage] = useState("Dashboard"); // ⬅️ default page changed to Dashboard
+  const [activePage, setActivePage] = useState("Dashboard");
 
   const renderContent = () => {
     switch (activePage) {
@@ -62,7 +30,38 @@ function CashierHome() {
 
   return (
     <div className="flex h-screen overflow-hidden">
-      <CashierSidebar activePage={activePage} onSelectPage={setActivePage} />
+      <Sidebar>
+        <SidebarItem
+          icon={<LayoutDashboard size={20} />}
+          text="Dashboard"
+          active={activePage === "Dashboard"}
+          onClick={() => setActivePage("Dashboard")}
+        />
+        <SidebarItem
+          icon={<ShoppingCart size={20} />}
+          text="POS"
+          active={activePage === "POS"}
+          onClick={() => setActivePage("POS")}
+        />
+        <SidebarItem
+          icon={<FileText size={20} />}
+          text="Billing"
+          active={activePage === "Billing"}
+          onClick={() => setActivePage("Billing")}
+        />
+        <SidebarItem
+          icon={<Users size={20} />}
+          text="Customers"
+          active={activePage === "Customers"}
+          onClick={() => setActivePage("Customers")}
+        />
+        <SidebarItem
+          icon={<PackageSearch size={20} />}
+          text="Product Lookup"
+          active={activePage === "Products"}
+          onClick={() => setActivePage("Products")}
+        />
+      </Sidebar>
 
       <div className="flex-grow overflow-y-auto p-4">
         {renderContent()}

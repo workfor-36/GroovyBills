@@ -14,7 +14,7 @@ export default function Sidebar({ children }) {
           <span className={`overflow-hidden transition-all text-white ${
               expanded ? "w-32" : "w-0"
             }`}>
-            Admin Panel
+            Cashier Panel
           </span>
           <button
             onClick={() => setExpanded((curr) => !curr)}
