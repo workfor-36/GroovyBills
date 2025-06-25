@@ -34,7 +34,7 @@ function Navbar() {
   return (
     <>
       <nav className="flex justify-between text-center bg-teal-950 sticky w-full">
-        <Link to="/" className="title">GroovyBills</Link>
+        <Link to="/" className="title"><span className="text-cyan-100">Groovy</span><span className="text-indigo-200">Bills</span></Link>
         <ul className="flex">
           <li> <NavLink to="/" >Home</NavLink> </li>
           <li> <NavLink to="/about">About Us</NavLink></li>
