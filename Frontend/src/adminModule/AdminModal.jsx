@@ -40,7 +40,7 @@ const AdminModal = ({isOpen, closeModal}) => {
             <input
               type="email"
               placeholder="Email address"
-              className="bg-transparent border-0 w-full outline-none text-sm md:text-base"
+              className="bg-transparent text-white border-0 w-full outline-none text-sm md:text-base"
             />
           </div>
 
@@ -49,7 +49,7 @@ const AdminModal = ({isOpen, closeModal}) => {
             <input
               type={showPassword ? "password" : "text"}
               placeholder="Password"
-              className="bg-transparent border-0 w-full outline-none text-sm md:text-base"
+              className="bg-transparent text-white border-0 w-full outline-none text-sm md:text-base"
             />
             {showPassword ? (
               <FaRegEyeSlash
@@ -63,8 +63,11 @@ const AdminModal = ({isOpen, closeModal}) => {
               />
             )}
           </div>
-           <p className="text-xs md:text-sm text-gray-500 text-right ">
-          Forget Password? <button className="text-white cursor-pointer pl-1">Click here</button>
+
+
+
+           <p className="text-xs md:text-sm text-gray-500 text-center ">
+          Forget Password? <a href="/"><button className="text-white cursor-pointer pl-1">Click here</button></a>
         </p>
         </div>
         

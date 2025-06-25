@@ -31,8 +31,8 @@ const CashierModal = ({isOpen, closeModal}) => {
   return (
     <div className=" fixed inset-0 w-full h-screen flex items-center justify-center">
       <div ref={modalRef} className="w-[90%] max-w-sm md:max-w-md lg:max-w-md h-72 p-5 bg-teal-950 flex-col flex items-center gap-3 rounded-xl shadow-slate-500 shadow-lg justify-center">
-        <h1 className="text-lg md:text-xl font-semibold text-white">Welcome Back <br /></h1>
-          <h1 className="text-lg md:text-xl font-semibold text-white">to the Cash Counter !!</h1>
+        <h1 className="mt-3 text-lg md:text-xl font-semibold text-white">Welcome Back <br /></h1>
+          <h1 className="text-lg md:text-xl font-semibold  text-white">to the Cash Counter !!</h1>
 
         <div className="w-80 flex flex-col gap-3">
           <div className="w-full h-10 flex items-center gap-2 bg-teal-800 p-2 rounded-xl">
@@ -40,7 +40,7 @@ const CashierModal = ({isOpen, closeModal}) => {
             <input
               type="email"
               placeholder="Email address"
-              className="bg-transparent border-0 w-full outline-none text-sm md:text-base"
+              className="bg-transparent text-white border-0 w-full outline-none text-sm md:text-base"
             />
           </div>
 
@@ -49,7 +49,7 @@ const CashierModal = ({isOpen, closeModal}) => {
             <input
               type={showPassword ? "password" : "text"}
               placeholder="Password"
-              className="bg-transparent border-0 w-full outline-none text-sm md:text-base"
+              className="bg-transparent text-white border-0 w-full outline-none text-sm md:text-base"
             />
             {showPassword ? (
               <FaRegEyeSlash
@@ -65,7 +65,13 @@ const CashierModal = ({isOpen, closeModal}) => {
           </div>
         </div>
 
-        <div className="flex justify-between gap-16 mt-4 w-full text-white h-12">
+
+
+<p className="text-xs md:text-sm text-gray-500 text-center ">
+          Forgot Password? <a href="/"> <button className="text-white cursor-pointer pl-1">Click here</button></a>
+        </p>
+
+        <div className="flex justify-between gap-16  mt-0 w-full text-white h-12">
           <button className="flex-1 p-2 bg-cyan-900 rounded-xl hover:bg-cyan-950 text-sm md:text-base cursor-pointer">
             Login
           </button>
