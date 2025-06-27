@@ -1,4 +1,12 @@
 import DataTable from "react-data-table-component"
+const store=[
+  {store:"st2", sale:90, discount:20, cashcollection:20000},
+  {store:"st1", sale:88, discount:10, cashcollection:10000},
+  {store:"st3", sale:98, discount:130, cashcollection:30200},
+  {store:"st4", sale:81, discount:100, cashcollection:1032000},
+  
+]
+
 
 function Stores() {
   const columns = [
@@ -19,32 +27,17 @@ function Stores() {
       selector:row=>row.cashcollection
     }
   ];
-  const data=[
-    {
-      id:1,
-      store:'St1',
-      sale:'0',
-      discount:'0',
-      cashcollection:'0'
-    },
-    {
-      id:2,
-      store:'St2',
-      sale:'0',
-      discount:'0',
-      cashcollection:'0'
-    }
-
-  ]
+  
   return (
     <>
-    <div>
-<h1 className="text-center bg-teal-950 text-white">All Stores Summary</h1>
+    <div className="bg-white rounded-lg shadow-md p-6 m-1">
+<h3 className="text-lg font-semibold mb-4">All Stores Summary</h3>
       <DataTable 
       columns={columns}
-        data={data}
+        data={store}
         fixedHeader
         pagination
+        highlightOnHover
         />
   
     </div>
