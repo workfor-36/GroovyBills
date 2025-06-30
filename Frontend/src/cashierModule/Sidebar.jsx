@@ -1,7 +1,12 @@
-import {ChevronLast, ChevronFirst } from "lucide-react"
+import {ChevronLast, ChevronFirst,MoreVertical } from "lucide-react"
 import { useContext, createContext, useState } from "react"
 
 const SidebarContext = createContext()
+const logDetails = {
+  Mname: "Alice",
+  mail: "alice@gmail.com"
+};
+
 
 export default function Sidebar({ children }) {
   const [expanded, setExpanded] = useState(true)
@@ -29,20 +34,15 @@ export default function Sidebar({ children }) {
         </SidebarContext.Provider>
 
 {/* login details */}
-        {/* <div className="border-t flex p-3">
-          <div
-            className={`
-              flex justify-between items-center
-              overflow-hidden transition-all ${expanded ? "w-52 ml-3" : "w-0"}
-          `}
-          >
-            <div className="leading-4 bott">
-              <h4 className="font-semibold">John Doe</h4>
-              <span className="text-xs text-gray-600">johndoe@gmail.com</span>
+        <div className="border-t flex items-center p-3 text-white">
+          <div className={`transition-all ${expanded ? "w-52 ml-3" : "w-0 overflow-hidden"}`}>
+            <div className="leading-4">
+              <h4 className="font-semibold">{logDetails.Mname}</h4>
+              <span className="text-xs text-gray-300">{logDetails.mail}</span>
             </div>
-            <MoreVertical size={20} />
           </div>
-        </div> */}
+          {expanded && <MoreVertical size={20} className="ml-auto text-white" />}
+        </div>
       </nav>
     </aside>
         </>
