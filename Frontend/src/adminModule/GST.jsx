@@ -1,12 +1,12 @@
 import React from 'react'
 
-function Acounting() {
+function GST() {
   return (
     <div>
-      Acounting
+      GST
       
     </div>
   )
 }
 
-export default Acounting
+export default GST
