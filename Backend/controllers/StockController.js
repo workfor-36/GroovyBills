@@ -1,7 +1,8 @@
-const Stock = require('../models/stockModel');
+// controllers/stockController.js
+import Stock from '../models/stockModel.js';
 
 // Create a new product
-exports.addStockItem = async (req, res) => {
+export const addStockItem = async (req, res) => {
   try {
     const { name, category, size, color, quantity } = req.body;
     const stock = new Stock({ name, category, size, color, quantity });
@@ -13,7 +14,7 @@ exports.addStockItem = async (req, res) => {
 };
 
 // Get all stock items
-exports.getAllStock = async (req, res) => {
+export const getAllStock = async (req, res) => {
   try {
     const items = await Stock.find();
     res.json(items);
@@ -23,7 +24,7 @@ exports.getAllStock = async (req, res) => {
 };
 
 // Get a stock item by ID
-exports.getStockItemById = async (req, res) => {
+export const getStockItemById = async (req, res) => {
   try {
     const item = await Stock.findById(req.params.id);
     if (!item) return res.status(404).json({ message: "Item not found" });
@@ -34,7 +35,7 @@ exports.getStockItemById = async (req, res) => {
 };
 
 // Update stock item
-exports.updateStockItem = async (req, res) => {
+export const updateStockItem = async (req, res) => {
   try {
     const updated = await Stock.findByIdAndUpdate(
       req.params.id,
@@ -49,7 +50,7 @@ exports.updateStockItem = async (req, res) => {
 };
 
 // Delete stock item
-exports.deleteStockItem = async (req, res) => {
+export const deleteStockItem = async (req, res) => {
   try {
     const deleted = await Stock.findByIdAndDelete(req.params.id);
     if (!deleted) return res.status(404).json({ message: "Item not found" });

@@ -27,7 +27,6 @@ function AdminHome() {
     switch (activePage) {
       case "Dashboard": return <AdminDashboard />;
       case "Stores": return <Stores />;
-      case "GST": return <GST />;
       case "Inventory": return <Inventory />;
       case "CreateZone": return <CreateZone />;
       case "StockManagement": return <StockManagement />;
@@ -43,7 +42,6 @@ function AdminHome() {
         <SidebarItem icon={<LayoutDashboard size={20} />} text="Dashboard" active={activePage === "Dashboard"} onClick={() => setActivePage("Dashboard")} />
         <SidebarItem icon={<Store size={20} />} text="Stores" active={activePage === "Stores"} onClick={() => setActivePage("Stores")} />
         <SidebarItem icon={<Warehouse size={20} />} text="Inventory" active={activePage === "Inventory"} onClick={() => setActivePage("Inventory")} />
-        <SidebarItem icon={<UserCog size={20} />} text="GST"   active={activePage === "GST"} onClick={() => setActivePage(GST)} />
         <SidebarItem icon={<MapPinPlus size={20} />} text="Create Zone" active={activePage === "CreateZone"} onClick={() => setActivePage("CreateZone")} />
         <SidebarItem icon={<Receipt size={20} />} text="Report" active={activePage === "Report"} onClick={() => setActivePage("Report")} />
         <SidebarItem icon={<Settings size={20} />} text="Stock Management" active={activePage === "StockManagement"} onClick={() => setActivePage("StockManagement")} />
