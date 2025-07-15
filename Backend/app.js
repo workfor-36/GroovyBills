@@ -6,6 +6,8 @@ import authRoutes from './routes/authRoutes.js';
 import storeRoutes from './routes/storeRoutes.js';
 import stockRoutes from './routes/stockRoutes.js'
 import inventoryRoutes from './routes/inventoryRoutes.js';
+import reportRoutes from './routes/reportRoutes.js'
+import storeSummaryRoutes from './routes/storeSummaryRoutes.js'
 
 
 const app = express();
@@ -23,5 +25,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/stores', storeRoutes);
 app.use('/api/stocks', stockRoutes);
 app.use('/api/inventory', inventoryRoutes);
+app.use('/api/reports', reportRoutes);
+app.use('/api/storesummary', storeSummaryRoutes);
 
 export default app;
