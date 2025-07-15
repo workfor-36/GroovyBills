@@ -5,10 +5,7 @@ import Admin from '../models/Admin.js';
 
 dotenv.config();
 
-await mongoose.connect(process.env.MongoDBURI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+await mongoose.connect(process.env.MongoDBURI);
 
 const createAdmin = async () => {
   const exists = await Admin.findOne({ email: process.env.ADMIN_EMAIL });
