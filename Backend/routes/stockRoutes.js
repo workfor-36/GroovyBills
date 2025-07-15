@@ -1,12 +1,13 @@
-const express = require('express');
-const router = express.Router();
-const {
+import express from 'express';
+import {
   addStockItem,
   getAllStock,
   getStockItemById,
   updateStockItem,
   deleteStockItem
-} = require('../controllers/stockController');
+} from '../controllers/stockController.js';
+
+const router = express.Router();
 
 router.post('/', addStockItem);
 router.get('/', getAllStock);
@@ -14,4 +15,5 @@ router.get('/:id', getStockItemById);
 router.put('/:id', updateStockItem);
 router.delete('/:id', deleteStockItem);
 
-module.exports = router;
+export default router;
+
