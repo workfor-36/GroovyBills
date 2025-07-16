@@ -32,3 +32,12 @@ export const verifyAdmin = (req, res, next) => {
     return res.status(403).json({ message: 'Forbidden' });
   }
 };
+
+
+export const verifyManager = (req, res, next) => {
+  const user = req.user; // Assume auth middleware added user info
+  if (!user || user.role !== 'manager') {
+    return res.status(403).json({ message: 'Access denied: Manager only' });
+  }
+  next();
+};
