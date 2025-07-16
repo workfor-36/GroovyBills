@@ -1,9 +1,20 @@
 import Inventory from '../models/Inventory.js';
 import AuditLog from '../models/AuditLog.js';
+import Store from '../models/Store.js';
+
+// Helper to get the store based on role
+const getUserStoreName = async (user, storeNameFromReq = null) => {
+  if (user.role === 'admin') return storeNameFromReq;
+  const store = await Store.findOne({ managerEmail: user.email });
+  return store?.storeName;
+};
 
 // Adjust stock
 export const adjustStock = async (req, res) => {
-  const { storeName, product, quantity } = req.body;
+  const { product, quantity } = req.body;
+  const storeName = await getUserStoreName(req.user, req.body.storeName);
+
+  if (!storeName) return res.status(400).json({ message: 'Store not found or unauthorized' });
 
   try {
     const existing = await Inventory.findOne({ storeName, product });
@@ -17,7 +28,7 @@ export const adjustStock = async (req, res) => {
     await AuditLog.create({
       action: 'adjust',
       details: `Adjusted ${product} in ${storeName} to ${quantity}`,
-      performedBy: req.user.id
+      performedBy: req.user.id,
     });
 
     res.status(200).json({ message: 'Stock adjusted successfully' });
@@ -28,7 +39,10 @@ export const adjustStock = async (req, res) => {
 
 // Transfer stock
 export const transferStock = async (req, res) => {
-  const { fromStore, toStore, product, quantity } = req.body;
+  const { toStore, product, quantity } = req.body;
+  const fromStore = await getUserStoreName(req.user, req.body.fromStore);
+
+  if (!fromStore) return res.status(400).json({ message: 'Unauthorized or store not found' });
 
   try {
     const from = await Inventory.findOne({ storeName: fromStore, product });
@@ -51,7 +65,7 @@ export const transferStock = async (req, res) => {
     await AuditLog.create({
       action: 'transfer',
       details: `Transferred ${quantity} ${product} from ${fromStore} to ${toStore}`,
-      performedBy: req.user.id
+      performedBy: req.user.id,
     });
 
     res.status(200).json({ message: 'Stock transferred successfully' });
@@ -60,33 +74,46 @@ export const transferStock = async (req, res) => {
   }
 };
 
-// Get inventory
+// Get inventory by user's store or query
 export const getInventory = async (req, res) => {
   try {
-    const data = await Inventory.find();
+    const storeName = await getUserStoreName(req.user, req.query.storeName);
+    if (!storeName) return res.status(400).json({ message: 'Unauthorized or store not found' });
+
+    const data = await Inventory.find({ storeName });
     res.status(200).json(data);
   } catch (err) {
-    res.status(500).json({ message: 'Failed to fetch inventory' });
+    res.status(500).json({ message: 'Failed to fetch inventory', error: err.message });
   }
 };
 
-// Get low stock alerts (e.g. threshold = 5)
+// Low stock alerts
 export const getLowStockAlerts = async (req, res) => {
   const threshold = 5;
   try {
-    const alerts = await Inventory.find({ quantity: { $lt: threshold } });
+    const storeName = await getUserStoreName(req.user, req.query.storeName);
+    if (!storeName) return res.status(400).json({ message: 'Unauthorized or store not found' });
+
+    const alerts = await Inventory.find({
+      storeName,
+      quantity: { $lt: threshold },
+    });
     res.status(200).json(alerts);
   } catch (err) {
-    res.status(500).json({ message: 'Failed to fetch low stock alerts' });
+    res.status(500).json({ message: 'Failed to fetch low stock alerts', error: err.message });
   }
 };
 
-// Get audit logs
+// Get audit logs (only admin)
 export const getAuditLogs = async (req, res) => {
   try {
-    const logs = await AuditLog.find().sort({ date: -1 });
+    if (req.user.role !== 'admin') {
+      return res.status(403).json({ message: 'Only admin can view audit logs' });
+    }
+
+    const logs = await AuditLog.find().sort({ createdAt: -1 });
     res.status(200).json(logs);
   } catch (err) {
-    res.status(500).json({ message: 'Failed to fetch logs' });
+    res.status(500).json({ message: 'Failed to fetch logs', error: err.message });
   }
 };
