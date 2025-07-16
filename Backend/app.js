@@ -8,6 +8,7 @@ import stockRoutes from './routes/stockRoutes.js'
 import inventoryRoutes from './routes/inventoryRoutes.js';
 import reportRoutes from './routes/reportRoutes.js'
 import storeSummaryRoutes from './routes/storeSummaryRoutes.js'
+import adminDashboardRoutes from './routes/adminDashboardRoutes.js'
 
 
 const app = express();
@@ -27,5 +28,6 @@ app.use('/api/stocks', stockRoutes);
 app.use('/api/inventory', inventoryRoutes);
 app.use('/api/reports', reportRoutes);
 app.use('/api/storesummary', storeSummaryRoutes);
+app.use('/api/admin/dashboard', adminDashboardRoutes);
 
 export default app;
