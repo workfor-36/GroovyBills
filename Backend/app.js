@@ -10,6 +10,8 @@ import reportRoutes from './routes/reportRoutes.js'
 import storeSummaryRoutes from './routes/storeSummaryRoutes.js'
 import adminDashboardRoutes from './routes/adminDashboardRoutes.js'
 import managerReportRoutes from './routes/managerReportRoutes.js';
+import customerRoutes from './routes/customerRoutes.js';
+import posRoutes from './routes/posRoutes.js';
 
 
 const app = express();
@@ -31,5 +33,8 @@ app.use('/api/reports', reportRoutes);
 app.use('/api/storesummary', storeSummaryRoutes);
 app.use('/api/admin/dashboard', adminDashboardRoutes);
 app.use('/api/manager/report', managerReportRoutes)
+app.use('/api/customers', customerRoutes);
+app.use('/api/pos', posRoutes)
+app.use('/api/bills', billRoutes);
 
 export default app;
