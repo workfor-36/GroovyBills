@@ -12,6 +12,7 @@ import adminDashboardRoutes from './routes/adminDashboardRoutes.js'
 import managerReportRoutes from './routes/managerReportRoutes.js';
 import customerRoutes from './routes/customerRoutes.js';
 import posRoutes from './routes/posRoutes.js';
+import billRoutes from './routes/billsRoutes.js'
 
 
 const app = express();

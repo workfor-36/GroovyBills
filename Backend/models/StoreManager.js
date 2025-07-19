@@ -5,7 +5,12 @@ import bcrypt from 'bcryptjs';
 const managerSchema = new mongoose.Schema({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
-  password: { type: String, required: true }
+  password: { type: String, required: true },
+  store: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Store',
+    required: true
+  }
 });
 
 managerSchema.pre('save', async function (next) {
