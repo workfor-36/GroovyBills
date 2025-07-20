@@ -14,6 +14,14 @@ export const authenticate = (req, res, next) => {
     return res.status(403).json({ message: 'Forbidden: Invalid token' });
   }
 };
+ 
+// Unified access for both admin and manager
+export const verifyUser = (req, res, next) => {
+  if (!req.user || !['admin', 'manager'].includes(req.user.role)) {
+    return res.status(403).json({ message: 'Access denied: Admin or Manager only' });
+  }
+  next();
+};
 
 //  Role-based middleware
 export const verifyAdmin = (req, res, next) => {
@@ -30,10 +38,4 @@ export const verifyManager = (req, res, next) => {
   next();
 };
 
-// ✅ Unified access for both admin and manager
-export const verifyUser = (req, res, next) => {
-  if (!req.user || !['admin', 'manager'].includes(req.user.role)) {
-    return res.status(403).json({ message: 'Access denied: Admin or Manager only' });
-  }
-  next();
-};
+

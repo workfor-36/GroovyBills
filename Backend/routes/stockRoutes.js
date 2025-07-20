@@ -6,10 +6,10 @@ import {
   updateStockItem,
   deleteStockItem
 } from '../controllers/stockController.js';
-import { authenticate, verifyAdmin, verifyManager, verifyUser } from '../middleware/authMiddleware.js';
+import { authenticate, verifyUser} from '../middleware/authMiddleware.js';
 
 const router = express.Router();
-router.use(authenticate, verifyUser,verifyAdmin, verifyManager);
+router.use(authenticate, verifyUser);
 
 router.post('/', addStockItem);
 router.get('/', getAllStock);
