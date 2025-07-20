@@ -40,10 +40,7 @@ export const loginManager = async (req, res) => {
   if (!user || !(await user.matchPassword(password))) {
     return res.status(401).json({ message: 'Invalid credentials' });
   }
-
-  if (!user.store) {
-    return res.status(400).json({ message: 'Manager is not assigned to any store' });
-  }
+  
 
   const token = generateToken(user._id, 'manager', user.store); // ⬅️ Pass store ID
 
