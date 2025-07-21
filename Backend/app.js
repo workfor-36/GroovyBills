@@ -8,7 +8,7 @@ import stockRoutes from './routes/stockRoutes.js'
 import inventoryRoutes from './routes/inventoryRoutes.js';
 import reportRoutes from './routes/reportRoutes.js'
 import storeSummaryRoutes from './routes/storeSummaryRoutes.js'
-
+import billingRoutes from './routes/billingRoutes.js';
 
 const app = express();
 
@@ -27,5 +27,7 @@ app.use('/api/stocks', stockRoutes);
 app.use('/api/inventory', inventoryRoutes);
 app.use('/api/reports', reportRoutes);
 app.use('/api/storesummary', storeSummaryRoutes);
+app.use('/api/billing', billingRoutes);
+
 
 export default app;
