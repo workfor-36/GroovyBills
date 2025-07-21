@@ -1,19 +1,25 @@
 import express from 'express';
-import { protect } from '../middleware/authMiddleware.js';
+import { authenticate, verifyUser, verifyAdmin } from '../middleware/authMiddleware.js';
 import {
+  getInventory,
   adjustStock,
   transferStock,
-  getInventory,
   getLowStockAlerts,
   getAuditLogs
 } from '../controllers/inventoryController.js';
 
 const router = express.Router();
 
-router.post('/adjust', protect('admin'), adjustStock);
-router.post('/transfer', protect('admin'), transferStock);
-router.get('/', protect('admin'), getInventory);
-router.get('/low-stock', protect('admin'), getLowStockAlerts);
-router.get('/logs', protect('admin'), getAuditLogs);
+// Authenticate all routes first
+router.use(authenticate);
+
+// Shared routes for admin + manager
+router.post('/adjust', verifyUser, adjustStock);
+router.post('/transfer', verifyUser, transferStock);
+router.get('/', verifyUser, getInventory);
+router.get('/low-stock', verifyUser, getLowStockAlerts);
+
+// Admin-only route
+router.get('/logs', verifyAdmin, getAuditLogs);
 
 export default router;

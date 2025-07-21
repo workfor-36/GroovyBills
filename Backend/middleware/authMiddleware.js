@@ -1,34 +1,41 @@
 import jwt from 'jsonwebtoken';
 
-export const protect = (role) => (req, res, next) => {
+// Middleware to verify JWT token and populate req.user
+export const authenticate = (req, res, next) => {
   const token = req.cookies.token;
-  if (!token) return res.status(401).json({ message: 'Unauthorized' });
+
+  if (!token) return res.status(401).json({ message: 'Unauthorized: No token' });
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    if (decoded.role !== role) throw new Error('Role mismatch');
-    req.user = decoded;
+    req.user = decoded; // Populate user data
     next();
   } catch (err) {
-    return res.status(403).json({ message: 'Forbidden' });
+    return res.status(403).json({ message: 'Forbidden: Invalid token' });
   }
 };
+ 
+// Unified access for both admin and manager
+export const verifyUser = (req, res, next) => {
+  if (!req.user || !['admin', 'manager'].includes(req.user.role)) {
+    return res.status(403).json({ message: 'Access denied: Admin or Manager only' });
+  }
+  next();
+};
 
-
-
-// middlewares/authMiddleware.js
-
-
+//  Role-based middleware
 export const verifyAdmin = (req, res, next) => {
-  const token = req.cookies.token;
-  if (!token) return res.status(401).json({ message: 'Unauthorized' });
-
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    if (decoded.role !== 'admin') throw new Error('Role mismatch');
-    req.user = decoded;
-    next();
-  } catch (err) {
-    return res.status(403).json({ message: 'Forbidden' });
+  if (!req.user || req.user.role !== 'admin') {
+    return res.status(403).json({ message: 'Access denied: Admin only' });
   }
+  next();
 };
+
+export const verifyManager = (req, res, next) => {
+  if (!req.user || req.user.role !== 'manager') {
+    return res.status(403).json({ message: 'Access denied: Manager only' });
+  }
+  next();
+};
+
+

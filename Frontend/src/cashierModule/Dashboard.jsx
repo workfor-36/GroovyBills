@@ -4,7 +4,6 @@ import React from "react";
 const dashboardData = {
   totalBillsToday: 42,
   totalItemsSold: 138,
-  avgBillingTime: "2 min 30 sec",
   topProducts: [
     { name: "T-Shirt", sold: 38 },
     { name: "Sneakers", sold: 24 },
@@ -13,7 +12,7 @@ const dashboardData = {
 };
 
 const Dashboard = () => {
-  const { totalBillsToday, totalItemsSold, avgBillingTime, topProducts } = dashboardData;
+  const { totalBillsToday, totalItemsSold, topProducts } = dashboardData;
 
   return (
     <div className="px-4 py-6 lg:px-12">
@@ -29,11 +28,6 @@ const Dashboard = () => {
         <div className="bg-white rounded-lg shadow-md p-5">
           <h3 className="text-gray-600 text-sm mb-1">Total Items Sold</h3>
           <p className="text-2xl font-semibold text-green-600">{totalItemsSold}</p>
-        </div>
-
-        <div className="bg-white rounded-lg shadow-md p-5">
-          <h3 className="text-gray-600 text-sm mb-1">Avg Billing Time</h3>
-          <p className="text-2xl font-semibold text-yellow-600">{avgBillingTime}</p>
         </div>
       </div>
 

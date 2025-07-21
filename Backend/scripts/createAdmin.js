@@ -20,11 +20,11 @@ const createAdmin = async () => {
   });
 
   await admin.save();
-  console.log('✅ Admin created successfully');
+  console.log(' Admin created successfully');
   process.exit();
 };
 
 createAdmin().catch((err) => {
-  console.error('❌ Error creating admin:', err.message);
+  console.error(' Error creating admin:', err.message);
   process.exit(1);
 });

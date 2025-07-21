@@ -9,8 +9,8 @@ import {
 } from "lucide-react";
 
 import Dashboard from './Dashboard';
-import POS from './POS';
-import Billing from './Billing';
+import Pos from './Pos';
+import Bills from './Bills';
 import Customers from './Customers';
 import Products from './Products';
 
@@ -20,8 +20,8 @@ function CashierHome() {
   const renderContent = () => {
     switch (activePage) {
       case "Dashboard": return <Dashboard />;
-      case "POS": return <POS />;
-      case "Billing": return <Billing />;
+      case "Pos": return <Pos />;
+      case "Bills": return <Bills />;
       case "Customers": return <Customers />;
       case "Products": return <Products />;
       default: return <Dashboard />;
@@ -41,13 +41,13 @@ function CashierHome() {
           icon={<ShoppingCart size={20} />}
           text="POS"
           active={activePage === "POS"}
-          onClick={() => setActivePage("POS")}
+          onClick={() => setActivePage("Pos")}
         />
         <SidebarItem
           icon={<FileText size={20} />}
-          text="Billing"
-          active={activePage === "Billing"}
-          onClick={() => setActivePage("Billing")}
+          text="View all Bills"
+          active={activePage === "Bills"}
+          onClick={() => setActivePage("Bills")}
         />
         <SidebarItem
           icon={<Users size={20} />}

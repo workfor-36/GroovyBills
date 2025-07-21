@@ -9,6 +9,12 @@ import inventoryRoutes from './routes/inventoryRoutes.js';
 import reportRoutes from './routes/reportRoutes.js'
 import storeSummaryRoutes from './routes/storeSummaryRoutes.js'
 import billingRoutes from './routes/billingRoutes.js';
+import adminDashboardRoutes from './routes/adminDashboardRoutes.js'
+import managerReportRoutes from './routes/managerReportRoutes.js';
+import customerRoutes from './routes/customerRoutes.js';
+import posRoutes from './routes/posRoutes.js';
+import billRoutes from './routes/billsRoutes.js'
+
 
 const app = express();
 
@@ -27,7 +33,15 @@ app.use('/api/stocks', stockRoutes);
 app.use('/api/inventory', inventoryRoutes);
 app.use('/api/reports', reportRoutes);
 app.use('/api/storesummary', storeSummaryRoutes);
+<<<<<<< HEAD
 app.use('/api/billing', billingRoutes);
 
+=======
+app.use('/api/admin/dashboard', adminDashboardRoutes);
+app.use('/api/manager/report', managerReportRoutes)
+app.use('/api/customers', customerRoutes);
+app.use('/api/pos', posRoutes)
+app.use('/api/bills', billRoutes);
+>>>>>>> bef3f1306a4057cec9331d9c494fa34cb2856013
 
 export default app;

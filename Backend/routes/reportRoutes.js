@@ -1,9 +1,9 @@
 import express from 'express';
-import { getLatestReport, addReport } from '../controllers/reportController.js';
+import { getReportSummary } from '../controllers/reportController.js';
+import { authenticate, verifyAdmin } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
-router.get('/', getLatestReport);
-router.post('/', addReport); // Optional for admin/report entry
+router.get('/summary', authenticate, verifyAdmin, getReportSummary);
 
 export default router;

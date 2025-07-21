@@ -1,7 +1,11 @@
 import mongoose from 'mongoose';
 
 const storeSummarySchema = new mongoose.Schema({
-  store: { type: String, required: true },
+  storeId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Store',
+    required: true
+  },
   sale: { type: Number, required: true },
   discount: { type: Number, required: true },
   cashcollection: { type: Number, required: true }
@@ -9,5 +13,4 @@ const storeSummarySchema = new mongoose.Schema({
   timestamps: true
 });
 
-const StoreSummary = mongoose.model('StoreSummary', storeSummarySchema);
-export default StoreSummary;
+export default mongoose.model('StoreSummary', storeSummarySchema);
