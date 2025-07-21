@@ -19,7 +19,7 @@ import billRoutes from './routes/billsRoutes.js'
 const app = express();
 
 app.use(cors({
-  origin: 'http://localhost:3000', // frontend origin
+  origin: 'http://localhost:5173', // frontend origin
   credentials: true,              // allow cookies from frontend
 }));
 
@@ -33,15 +33,12 @@ app.use('/api/stocks', stockRoutes);
 app.use('/api/inventory', inventoryRoutes);
 app.use('/api/reports', reportRoutes);
 app.use('/api/storesummary', storeSummaryRoutes);
-<<<<<<< HEAD
 app.use('/api/billing', billingRoutes);
 
-=======
 app.use('/api/admin/dashboard', adminDashboardRoutes);
 app.use('/api/manager/report', managerReportRoutes)
 app.use('/api/customers', customerRoutes);
 app.use('/api/pos', posRoutes)
 app.use('/api/bills', billRoutes);
->>>>>>> bef3f1306a4057cec9331d9c494fa34cb2856013
 
 export default app;

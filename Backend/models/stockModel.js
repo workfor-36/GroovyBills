@@ -5,6 +5,8 @@ const stockSchema = new mongoose.Schema({
   category: { type: String, required: true },
   size: { type: String },
   color: { type: String },
+    price: { type: Number, required: true, },
+
   quantity: { type: Number, required: true, default: 0 },
   store: { type: mongoose.Schema.Types.ObjectId, ref: 'Store', required: true }
 }, {

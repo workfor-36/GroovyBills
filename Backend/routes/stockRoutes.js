@@ -5,7 +5,7 @@ import {
   getStockItemById,
   updateStockItem,
   deleteStockItem
-} from '../controllers/stockController.js';
+} from '../controllers/StockController.js';
 import { authenticate, verifyUser} from '../middleware/authMiddleware.js';
 
 const router = express.Router();

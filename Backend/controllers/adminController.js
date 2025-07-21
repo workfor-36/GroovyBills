@@ -20,10 +20,10 @@ export const loginAdmin = async (req, res) => {
 
     // Send as cookie
     res.cookie('token', token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production', // set to true in production
-      sameSite: 'strict',
-      maxAge: 24 * 60 * 60 * 1000 // 1 day
+      httpOnly: true,            // Ensures only the server can access the cookie (security feature)
+      secure: process.env.NODE_ENV === 'production',  // Use secure cookies in production
+      sameSite: 'strict',        // Prevent cross-site cookie sending (improves security)
+      maxAge: 24 * 60 * 60 * 1000  // 1 day
     });
 
     res.status(200).json({ message: 'Admin login successful' });

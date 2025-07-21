@@ -4,7 +4,7 @@ import Store from '../models/Store.js';
 // Create stock item
 export const addStockItem = async (req, res) => {
   try {
-    const { name, category, size, color, quantity, storeId } = req.body;
+    const { name, category, size, color,price, quantity, storeId,  } = req.body;
 
     // Admin can choose any store; manager must use their own store
     const user = req.user;
@@ -16,7 +16,7 @@ export const addStockItem = async (req, res) => {
     const store = await Store.findById(storeId);
     if (!store) return res.status(404).json({ message: 'Store not found' });
 
-    const stock = new Stock({ name, category, size, color, quantity, store: storeId });
+    const stock = new Stock({ name, category, size, color,price, quantity, store: storeId });
     await stock.save();
     res.status(201).json(stock);
   } catch (err) {

@@ -11,17 +11,36 @@ export const authenticate = (req, res, next) => {
     req.user = decoded; // Populate user data
     next();
   } catch (err) {
+    // Handle expired token specifically
+    if (err.name === 'TokenExpiredError') {
+      return res.status(401).json({ message: 'Token expired. Please log in again.' });
+    }
     return res.status(403).json({ message: 'Forbidden: Invalid token' });
   }
 };
+
  
 // Unified access for both admin and manager
 export const verifyUser = (req, res, next) => {
   if (!req.user || !['admin', 'manager'].includes(req.user.role)) {
-    return res.status(403).json({ message: 'Access denied: Admin or Manager only' });
+    return res.status(403).json({ message: 'Access denied: Admin, or Manager only' });
   }
   next();
 };
+
+
+// middleware/verifyCashier.js
+
+export const verifyCashier = (req, res, next) => {
+  // Check if req.user exists and has the 'cashier' role
+  if (!req.user || req.user.role !== 'cashier') {
+    return res.status(403).json({ message: 'Access denied: Cashier role required' });
+  }
+
+  // Proceed to the next middleware or route handler if authorized
+  next();
+};
+
 
 //  Role-based middleware
 export const verifyAdmin = (req, res, next) => {
