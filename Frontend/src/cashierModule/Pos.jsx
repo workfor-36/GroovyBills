@@ -3,20 +3,25 @@ import { ShoppingCart } from "lucide-react";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 
-// Sample Product List
-const sampleProducts = [
-  { id: 1, name: "T-Shirt", price: 299, stock: 20 },
-  { id: 2, name: "Jeans", price: 999, stock: 15 },
-  { id: 3, name: "Sneakers", price: 1999, stock: 8 },
-  { id: 4, name: "Cap", price: 199, stock: 25 },
-  { id: 5, name: "Watch", price: 1499, stock: 10 },
-];
-
+// Your main POS component
 const POS = () => {
+  // Sample Product List defined inside the component
+  const sampleProducts = [
+    { id: 1, name: "T-Shirt", price: 299, stock: 20 },
+    { id: 2, name: "Jeans", price: 999, stock: 15 },
+    { id: 3, name: "Sneakers", price: 1999, stock: 8 },
+    { id: 4, name: "Cap", price: 199, stock: 25 },
+    { id: 5, name: "Watch", price: 1499, stock: 10 },
+  ];
+
+  // State hooks
   const [cart, setCart] = useState([]);
   const [checkoutDone, setCheckoutDone] = useState(false);
   const [invoiceData, setInvoiceData] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filteredProducts, setFilteredProducts] = useState(sampleProducts);
 
+  // Add product to cart
   const addToCart = (product) => {
     const existing = cart.find((item) => item.id === product.id);
     if (existing) {
@@ -32,12 +37,15 @@ const POS = () => {
     }
   };
 
+  // Remove product from cart
   const removeFromCart = (id) => {
     setCart(cart.filter((item) => item.id !== id));
   };
 
+  // Calculate total price
   const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
+  // Handle checkout
   const handleCheckout = () => {
     const invoice = {
       invoiceNo: `INV-${Date.now()}`,
@@ -58,10 +66,26 @@ const POS = () => {
     setCheckoutDone(true);
   };
 
+  // Back to POS screen
   const handleBackToPOS = () => {
     setCart([]);
     setInvoiceData(null);
     setCheckoutDone(false);
+  };
+
+  // Handle product search
+  const handleSearch = () => {
+    const term = searchTerm.toLowerCase();
+    const results = sampleProducts.filter((product) =>
+      product.name.toLowerCase().includes(term)
+    );
+    setFilteredProducts(results);
+  };
+
+  // Clear search filter
+  const handleClearSearch = () => {
+    setSearchTerm("");
+    setFilteredProducts(sampleProducts);
   };
 
   // ---------------- Billing Component ----------------
@@ -179,26 +203,58 @@ const POS = () => {
     <div className="flex flex-col gap-6 px-4 lg:flex-row lg:px-6 py-4">
       {/* Left Section (Products) */}
       <div className="w-full lg:w-2/3">
-        <h2 className="text-xl font-semibold mb-3">Products</h2>
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-          {sampleProducts.map((product) => (
-            <div
-              key={product.id}
-              className="border p-4 rounded-lg shadow hover:shadow-md transition"
+        {/* Product Search */}
+        <div className="mb-4 flex flex-col sm:flex-row gap-2 sm:items-center justify-between">
+          <h2 className="text-xl font-semibold">Products</h2>
+          <div className="flex gap-2">
+            <input
+              type="text"
+              placeholder="Search products..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="border px-3 py-1 rounded w-48 text-sm"
+            />
+            <button
+              onClick={handleSearch}
+              className="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 text-sm"
             >
-              <h3 className="font-medium text-lg">{product.name}</h3>
-              <p className="text-sm text-gray-600">₹{product.price}</p>
-              <p className="text-xs text-gray-400 mb-2">
-                In Stock: {product.stock}
-              </p>
-              <button
-                onClick={() => addToCart(product)}
-                className="bg-blue-600 text-white w-full py-1 text-sm rounded hover:bg-blue-700"
+              Search
+            </button>
+            <button
+              onClick={handleClearSearch}
+              className="bg-gray-400 text-white px-3 py-1 rounded hover:bg-gray-500 text-sm"
+            >
+              Clear
+            </button>
+          </div>
+        </div>
+
+        {/* Product Grid */}
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+          {filteredProducts.length > 0 ? (
+            filteredProducts.map((product) => (
+              <div
+                key={product.id}
+                className="border p-4 rounded-lg shadow hover:shadow-md transition"
               >
-                Add to Cart
-              </button>
-            </div>
-          ))}
+                <h3 className="font-medium text-lg">{product.name}</h3>
+                <p className="text-sm text-gray-600">₹{product.price}</p>
+                <p className="text-xs text-gray-400 mb-2">
+                  In Stock: {product.stock}
+                </p>
+                <button
+                  onClick={() => addToCart(product)}
+                  className="bg-blue-600 text-white w-full py-1 text-sm rounded hover:bg-blue-700"
+                >
+                  Add to Cart
+                </button>
+              </div>
+            ))
+          ) : (
+            <p className="col-span-full text-center text-gray-500">
+              No products found.
+            </p>
+          )}
         </div>
       </div>
 

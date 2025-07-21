@@ -1,27 +1,58 @@
 import React, { useState } from "react";
+import axios from "axios";
+import Cookies from "js-cookie"; // Import js-cookie for easy cookie handling
 
 function CreateZone() {
   const [storeData, setStoreData] = useState({
-    name: "",
-    address: "",
-    manager: "",
-    cashier: "",
+    storeName: "",
+    storeAddress: "",
+    managerName: "",
+    managerEmail: "",
+    cashierName: "",
+    cashierEmail: "",
   });
 
-  const [stores, setStores] = useState([]);
+  const [stores, setStores] = useState([]);  // This will hold the list of stores
   const [showForm, setShowForm] = useState(false);
+  const [error, setError] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+  const [loading, setLoading] = useState(false);
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setStoreData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setStores((prev) => [...prev, storeData]);
-    setStoreData({ name: "", address: "", manager: "", cashier: "" });
-    setShowForm(false);
-  };
+
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setLoading(true);
+  setError("");
+
+  try {
+    const response = await axios.post(
+      "http://localhost:4001/api/stores/create",
+      storeData,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true, // Cookie (token) will be sent automatically
+      }
+    );
+
+    console.log("Store created:", response.data);
+    setLoading(false);
+    setSuccessMessage("Store created successfully!");
+    setStores((prev) => [...prev, response.data.store]);
+  } catch (error) {
+    console.error("Error during store creation:", error);
+    setError(error.response?.data?.message || "Store creation failed");
+    setLoading(false);
+  }
+};
+
 
   return (
     <div className="p-6">
@@ -45,8 +76,8 @@ function CreateZone() {
             <label className="block font-medium">Store Name</label>
             <input
               type="text"
-              name="name"
-              value={storeData.name}
+              name="storeName"
+              value={storeData.storeName}
               onChange={handleChange}
               required
               className="border px-3 py-2 w-full rounded"
@@ -57,8 +88,8 @@ function CreateZone() {
             <label className="block font-medium">Store Address</label>
             <input
               type="text"
-              name="address"
-              value={storeData.address}
+              name="storeAddress"
+              value={storeData.storeAddress}
               onChange={handleChange}
               required
               className="border px-3 py-2 w-full rounded"
@@ -69,8 +100,20 @@ function CreateZone() {
             <label className="block font-medium">Store Manager</label>
             <input
               type="text"
-              name="manager"
-              value={storeData.manager}
+              name="managerName"
+              value={storeData.managerName}
+              onChange={handleChange}
+              required
+              className="border px-3 py-2 w-full rounded"
+            />
+          </div>
+
+          <div className="mb-3">
+            <label className="block font-medium">Manager Email</label>
+            <input
+              type="email"
+              name="managerEmail"
+              value={storeData.managerEmail}
               onChange={handleChange}
               required
               className="border px-3 py-2 w-full rounded"
@@ -81,13 +124,28 @@ function CreateZone() {
             <label className="block font-medium">Cashier</label>
             <input
               type="text"
-              name="cashier"
-              value={storeData.cashier}
+              name="cashierName"
+              value={storeData.cashierName}
               onChange={handleChange}
               required
               className="border px-3 py-2 w-full rounded"
             />
           </div>
+
+          <div className="mb-3">
+            <label className="block font-medium">Cashier Email</label>
+            <input
+              type="email"
+              name="cashierEmail"
+              value={storeData.cashierEmail}
+              onChange={handleChange}
+              required
+              className="border px-3 py-2 w-full rounded"
+            />
+          </div>
+
+          {error && <p className="text-red-500">{error}</p>}
+          {successMessage && <p className="text-green-500">{successMessage}</p>}
 
           <div className="flex gap-2 mt-4">
             <button
@@ -125,10 +183,10 @@ function CreateZone() {
             <tbody>
               {stores.map((store, index) => (
                 <tr key={index}>
-                  <td className="border px-2 py-1">{store.name}</td>
-                  <td className="border px-2 py-1">{store.address}</td>
-                  <td className="border px-2 py-1">{store.manager}</td>
-                  <td className="border px-2 py-1">{store.cashier}</td>
+                  <td className="border px-2 py-1">{store.storeName}</td>
+                  <td className="border px-2 py-1">{store.storeAddress}</td>
+                  <td className="border px-2 py-1">{store.managerName}</td>
+                  <td className="border px-2 py-1">{store.cashierName}</td>
                 </tr>
               ))}
             </tbody>

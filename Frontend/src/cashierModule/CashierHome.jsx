@@ -19,24 +19,17 @@ function CashierHome() {
 
   const renderContent = () => {
     switch (activePage) {
-      case "Dashboard": return <Dashboard />;
       case "Pos": return <Pos />;
       case "Bills": return <Bills />;
       case "Customers": return <Customers />;
-      case "Products": return <Products />;
-      default: return <Dashboard />;
+      default: return <Pos />;
     }
   };
 
   return (
     <div className="flex h-screen overflow-hidden">
       <Sidebar>
-        <SidebarItem
-          icon={<LayoutDashboard size={20} />}
-          text="Dashboard"
-          active={activePage === "Dashboard"}
-          onClick={() => setActivePage("Dashboard")}
-        />
+        
         <SidebarItem
           icon={<ShoppingCart size={20} />}
           text="POS"
@@ -55,12 +48,7 @@ function CashierHome() {
           active={activePage === "Customers"}
           onClick={() => setActivePage("Customers")}
         />
-        <SidebarItem
-          icon={<PackageSearch size={20} />}
-          text="Product Lookup"
-          active={activePage === "Products"}
-          onClick={() => setActivePage("Products")}
-        />
+        
       </Sidebar>
 
       <div className="flex-grow overflow-y-auto p-4">

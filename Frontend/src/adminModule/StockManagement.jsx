@@ -1,10 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';  // Import Axios for API requests
 
-// Sample initial data
-const initialProducts = [
-  { id: 1, name: 'T-Shirt', category: 'Apparel', size: 'M', color: 'Red', visibleIn: ['Store A', 'Store B'] },
-  { id: 2, name: 'Sneakers', category: 'Footwear', size: '9', color: 'White', visibleIn: ['Store B'] },
-];
+const initialProducts = []; // Initial empty array for products
 const stores = ['Store A', 'Store B', 'Store C'];
 const categories = ['Apparel', 'Footwear', 'Accessories'];
 const sizes = ['S', 'M', 'L', 'XL', '8', '9', '10'];
@@ -17,10 +14,36 @@ export default function StockManagement() {
 
   const resetForm = () => setForm({ name: '', category: '', size: '', color: '', visibleIn: [] });
 
-  const handleAdd = () => {
-    const newProduct = { ...form, id: Date.now() };
-    setProducts([...products, newProduct]);
-    resetForm();
+  useEffect(() => {
+  // Fetch products when the component mounts
+  const fetchProducts = async () => {
+    try {
+      const response = await axios.get('/api/stocks');
+      console.log('API Response:', response.data); // Log the full response
+      if (Array.isArray(response.data)) {
+        setProducts(response.data);  // Ensure the response is an array
+      } else {
+        console.error("Error: Received data is not an array");
+        setProducts([]);  // Fallback to an empty array if the data is not in expected format
+      }
+    } catch (error) {
+      console.error("Error fetching products:", error);
+      setProducts([]);  // Ensure we set products to an empty array in case of an error
+    }
+  };
+  fetchProducts();
+}, []);
+
+
+  const handleAdd = async () => {
+    const newProduct = { ...form, price: 100, quantity: 10 }; // Example price and quantity
+    try {
+      const response = await axios.post('/api/stocks', newProduct);
+      setProducts([...products, response.data]);
+      resetForm();
+    } catch (error) {
+      console.error("Error adding product:", error);
+    }
   };
 
   const handleEdit = (prod) => {
@@ -28,17 +51,27 @@ export default function StockManagement() {
     setForm({ ...prod });
   };
 
-  const handleUpdate = () => {
-    setProducts(products.map(p => p.id === editing ? form : p));
-    setEditing(null);
-    resetForm();
-  };
-
-  const handleDelete = (id) => {
-    setProducts(products.filter(p => p.id !== id));
-    if (editing === id) {
+  const handleUpdate = async () => {
+    try {
+      const response = await axios.put(`/api/stocks/${editing}`, form);
+      setProducts(products.map(p => p.id === editing ? response.data : p));
       setEditing(null);
       resetForm();
+    } catch (error) {
+      console.error("Error updating product:", error);
+    }
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(`/api/stocks/${id}`);
+      setProducts(products.filter(p => p.id !== id));
+      if (editing === id) {
+        setEditing(null);
+        resetForm();
+      }
+    } catch (error) {
+      console.error("Error deleting product:", error);
     }
   };
 
@@ -128,19 +161,26 @@ export default function StockManagement() {
           </tr>
         </thead>
         <tbody>
-          {products.map(product => (
-            <tr key={product.id}>
-              <td className="border px-2 py-1">{product.name}</td>
-              <td className="border px-2 py-1">{product.category}</td>
-              <td className="border px-2 py-1">{product.size}</td>
-              <td className="border px-2 py-1">{product.color}</td>
-              <td className="border px-2 py-1">{product.visibleIn.join(', ')}</td>
-              <td className="border px-2 py-1 space-x-2">
-                <button onClick={() => handleEdit(product)} className="text-blue-600">Edit</button>
-                <button onClick={() => handleDelete(product.id)} className="text-red-600">Delete</button>
-              </td>
+          {/* Ensure `products` is an array before calling `.map()` */}
+          {Array.isArray(products) && products.length > 0 ? (
+            products.map(product => (
+              <tr key={product.id}>
+                <td className="border px-2 py-1">{product.name}</td>
+                <td className="border px-2 py-1">{product.category}</td>
+                <td className="border px-2 py-1">{product.size}</td>
+                <td className="border px-2 py-1">{product.color}</td>
+                <td className="border px-2 py-1">{product.visibleIn.join(', ')}</td>
+                <td className="border px-2 py-1 space-x-2">
+                  <button onClick={() => handleEdit(product)} className="text-blue-600">Edit</button>
+                  <button onClick={() => handleDelete(product.id)} className="text-red-600">Delete</button>
+                </td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan="6" className="text-center p-4">No products available</td>
             </tr>
-          ))}
+          )}
         </tbody>
       </table>
     </div>
