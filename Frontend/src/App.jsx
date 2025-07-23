@@ -9,9 +9,11 @@ import Navbar from './components/Navbar'
 import StoreManagerHome from './storeManagerModule/StoreManagerHome'
 import axios from "axios";
 
+
 function App() {
   return (
     <div>
+      
       <Navbar/>
       <Routes>
       <Route path="/" element={<Home/>}/>

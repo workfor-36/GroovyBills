@@ -13,44 +13,47 @@ export default function InventoryManagement() {
   const [showAdjustment, setShowAdjustment] = useState(false);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const token = Cookies.get("admin_token");
-    if (!token) {
-      alert("Access Denied: Admins only");
-      navigate("/admin");
-    } else {
-      fetchInventory();
-      fetchStores();
-    }
-  }, []);
+ useEffect(() => {
+  // 🔒 Let backend check token & role
+  axios.get("http://localhost:4001/api/inventory", {
+    withCredentials: true,
+  })
+  .then((res) => {
+    setInventory(res.data);
+    fetchStores(); // Fetch stores only if inventory loads
+  })
+  .catch((err) => {
+    console.warn("⛔ Access denied or not authenticated");
+    alert("Access denied. Admins only.");
+    navigate("/admin");
+  });
+}, []);
+
+
 
   const fetchInventory = async () => {
-    const token = Cookies.get("admin_token");
-    try {
-      const res = await axios.get("http://localhost:4001/api/inventory/", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      setInventory(res.data);
-    } catch (error) {
-      console.error("Inventory fetch error:", error.response?.data || error.message);
-    }
-  };
+  try {
+    const res = await axios.get("http://localhost:4001/api/inventory/", {
+      withCredentials: true,
+    });
+    setInventory(res.data);
+  } catch (error) {
+    console.error("Inventory fetch error:", error.response?.data || error.message);
+  }
+};
+
 
   const fetchStores = async () => {
-    const token = Cookies.get("admin_token");
-    try {
-      const res = await axios.get("http://localhost:4001/api/stores/all-stores", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      setAllStores(res.data);
-    } catch (error) {
-      console.error("Store fetch error:", error.response?.data || error.message);
-    }
-  };
+  try {
+    const res = await axios.get("http://localhost:4001/api/stores/all-stores", {
+      withCredentials: true,
+    });
+    setAllStores(res.data);
+  } catch (error) {
+    console.error("Store fetch error:", error.response?.data || error.message);
+  }
+};
+
 
   const updateInventory = (logEntry) => {
     fetchInventory();
@@ -165,14 +168,13 @@ function TransferForm({ stores, products, onSubmit, onCancel }) {
     const token = Cookies.get("admin_token");
     try {
       await axios.post(
-        "http://localhost:4001/api/inventory/transfer",
-        { fromStore, toStore, product, quantity },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+  "http://localhost:4001/api/inventory/transfer",
+  { fromStore, toStore, product, quantity },
+  {
+    withCredentials: true,
+  }
+);
+
       onSubmit(
         `Transferred ${quantity} ${product}(s) from ${fromStore} to ${toStore}`
       );
@@ -251,14 +253,13 @@ function AdjustmentForm({ stores, products, onSubmit, onCancel }) {
     const token = Cookies.get("admin_token");
     try {
       await axios.post(
-        "http://localhost:4001/api/inventory/adjust",
-        { store, product, adjustment },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+  "http://localhost:4001/api/inventory/adjust",
+  { store, product, adjustment },
+  {
+    withCredentials: true,
+  }
+);
+
       onSubmit(`Adjusted ${product} in ${store} by ${adjustment}`);
     } catch (error) {
       alert("Adjustment failed.");
