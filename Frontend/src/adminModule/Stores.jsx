@@ -21,7 +21,6 @@ function Stores() {
           withCredentials: true,  // This ensures cookies are sent with the request
         });
 
-        console.log("Fetched data:", res.data);  // Log the fetched data to check its structure
         setData(res.data);  // Update the state with the fetched data
       } catch (error) {
         console.error("❌ Failed to fetch stores:", error.message);

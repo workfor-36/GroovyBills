@@ -14,12 +14,16 @@ const router = express.Router();
 router.use(authenticate);
 
 // Shared routes for admin + manager
-router.post('/adjust', verifyUser, adjustStock);
-router.post('/transfer', verifyUser, transferStock);
-router.get('/', verifyUser, getInventory);
-router.get('/low-stock', verifyUser, getLowStockAlerts);
+router.post('/adjust', authenticate,verifyAdmin, adjustStock);
+router.post('/transfer',authenticate, verifyAdmin, transferStock);
+router.get('/', authenticate,verifyAdmin, getInventory);
+router.get('/low-stock', verifyAdmin, getLowStockAlerts);
 
 // Admin-only route
 router.get('/logs', verifyAdmin, getAuditLogs);
+router.get('/test-admin', authenticate, verifyAdmin, (req, res) => {
+  res.send('Hello Admin');
+});
+
 
 export default router;

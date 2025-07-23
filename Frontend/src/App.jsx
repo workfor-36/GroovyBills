@@ -7,6 +7,7 @@ import Home from './components/pages/Home'
 import CashierHome from './cashierModule/CashierHome'
 import Navbar from './components/Navbar'
 import StoreManagerHome from './storeManagerModule/StoreManagerHome'
+import axios from "axios";
 
 function App() {
   return (
